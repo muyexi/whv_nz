@@ -1,0 +1,95 @@
+---
+default: &DEFAULT
+  forms:
+    - personal1
+    - personal2
+    - medical1
+    - character
+    - working_holiday_specific
+  mailgun:
+    key: ""
+    from: ""
+    to: ""
+  rollbar_token: ""
+
+development:
+  <<: *DEFAULT
+  name: xx
+  password: xx
+  country_id: 106
+  credit_card:
+    cardnumber: 0
+    cardverificationcode: 0
+    expirymonth: 0
+    expiryyear: 0
+    cardholder: xx
+  personal1: 
+    family_name: xx
+    given_name: xx
+    title: 1
+    gender: 
+    day: 1
+    month: 1
+    year: 1991
+    street: xx
+    suburb: xx
+    city: xx
+    country_id: 46
+    email: xx@xx.com
+  personal2:
+    passport: xx
+    expiry_day: 1
+    expiry_month: 1
+    expiry_year: 2020
+    issue_day: 15
+    issue_month: 12
+    issue_year: 2007
+  working_holiday_specific:
+    travel_day: 1
+    travel_month: 8
+    travel_year: 2017
+    been_before: "No"
+    been_day: 1
+    been_month: 1 
+    been_year: 2017
+
+production:
+  <<: *DEFAULT
+  name: 
+  password: 
+  country_id: 46
+  credit_card: 
+    cardnumber: 
+    cardverificationcode: 
+    expirymonth: 
+    expiryyear: 
+    cardholder: 
+  personal1: 
+    family_name: 
+    given_name: 
+    title: 
+    gender: 
+    day: 
+    month: 
+    year: 
+    street: 
+    suburb: 
+    city: 
+    country_id: 
+    email: 
+  personal2:
+    passport: 
+    expiry_day: 
+    expiry_month: 
+    expiry_year: 
+    issue_day: 
+    issue_month: 
+    issue_year: 
+  working_holiday_specific:
+    travel_day: 
+    travel_month: 
+    travel_year: 
+    been_before: "No"
+    been_day: 
+    been_month: 
+    been_year: 
