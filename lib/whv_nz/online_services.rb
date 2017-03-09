@@ -1,5 +1,4 @@
 require 'faraday'
-require './online_services_middleware.rb'
 
 class OnlineServices
 

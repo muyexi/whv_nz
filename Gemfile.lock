@@ -1,5 +1,19 @@
+PATH
+  remote: .
+  specs:
+    whv_nz (0.1.0)
+      activesupport
+      faraday (~> 0.11.0)
+      faraday_middleware (~> 0.10.0)
+      mailgun-ruby (~> 1.1)
+      nokogiri (~> 1.6, >= 1.6.8)
+      rollbar
+      selenium-webdriver (~> 3.1)
+      slop
+      sucker_punch (~> 1.6)
+
 GEM
-  remote: https://ruby.taobao.org/
+  remote: https://rubygems.org/
   specs:
     activesupport (5.0.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -55,6 +69,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rake (10.5.0)
     rest-client (2.0.1)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -83,16 +98,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
-  faraday (~> 0.11.0)
-  faraday_middleware (~> 0.10.0)
-  mailgun-ruby (~> 1.1)
-  nokogiri (~> 1.6, >= 1.6.8)
+  bundler (~> 1.14)
   pry
-  rollbar
-  selenium-webdriver (~> 3.1)
-  slop
-  sucker_punch (~> 1.6)
+  rake (~> 10.0)
+  whv_nz!
 
 BUNDLED WITH
-   1.13.6
+   1.14.6

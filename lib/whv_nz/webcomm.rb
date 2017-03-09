@@ -2,7 +2,6 @@ require 'faraday'
 require 'nokogiri'
 
 require 'faraday_middleware'
-require './webcomm_middleware.rb'
 
 class Webcomm
   def initialize(config, hk_id, logger)

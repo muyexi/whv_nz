@@ -1,5 +1,4 @@
 require 'faraday'
-require "./online_services.rb"
 
 class OnlineServicesMiddleware < Faraday::Middleware
   def call(request_env)

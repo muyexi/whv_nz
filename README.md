@@ -1,13 +1,24 @@
 ##Description
 Ruby script to apply for [Working Holiday Visa](https://www.immigration.govt.nz/new-zealand-visas/options/work/thinking-about-coming-to-new-zealand-to-work/working-holiday-visa) from New Zeanland.
 
+##Installation
+
+```sh
+$ gem install whv_nz
+```
+
 ##Usage
-    ruby main.rb
-    
-    Usage: main [options]
-    -p, --production      Use real account
-    -d, --daemon          In background
-    -h, --help            Show help info
+
+```sh
+$ whv_nz
+
+Usage: main [options]
+-n, --new             Generate config file
+-c, --config          Config file path
+-p, --production      Use real account
+-d, --daemon          In background
+-h, --help            Show help info
+```
 
 #Config
 * title: 1(Mr), 2(Mrs), 3(Ms), 4(Miss), 5(Dr), 6(Other)

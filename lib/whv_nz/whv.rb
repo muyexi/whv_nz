@@ -1,7 +1,12 @@
-require './environment.rb'
-require './pages.rb'
-require './online_services.rb'
-require './webcomm.rb'
+require 'yaml'
+require 'logger'
+require 'active_support'
+require 'active_support/core_ext'
+require 'pry'
+require 'slop'
+require 'mailgun'
+require 'rollbar'
+require 'sucker_punch'
 
 class Whv
 
@@ -9,20 +14,60 @@ class Whv
 
   def initialize
     @opts = Slop.parse do
+      on '-n', '--new', 'Generate config file'
+      
+      on '-c', '--config=', 'Config file path'
+
       on '-p', '--production', 'Use real account'
 
       on '-d', '--daemon', 'In background'
       
       on '-h', '--help', 'Show help info'
     end
+  end
+
+  def start
+    begin
+      if @opts.daemon?
+        ::Process.daemon(true, true)
+        start_apply
+      elsif @opts.new?
+        path = File.dirname(__FILE__) + "/config.yml"
+        FileUtils.cp(path, Dir.pwd)
+      elsif @opts[:config]
+        prestart
+        start_apply
+      else
+        puts @opts
+      end
+
+      exit 0
+    rescue StandardError => e
+      @logger.fatal(e)
+      Rollbar.critical(e)
+      
+      raise e
+    end
+  end
+
+  def prestart
+    if !Dir.exist?("log")
+      Dir.mkdir("log")
+    end
+
+    @data_path = Dir.pwd + "/log/data.yml"
+    if !File.exist?(@data_path)
+      File.new(@data_path, "w+")
+    end    
 
     @env = @opts.production? ? "production" : "development"
-    @file_data = YAML.load(File.read("./log/data.yml")) || {}
+    @file_data = YAML.load(File.read(@data_path)) || {}
 
     @data = @file_data[@env] || {}
-    @config = YAML.load(File.read("./config.yml"))[@env]
+    @config = YAML.load(File.read(@opts[:config]))[@env]
 
-    logdev = @opts.daemon? ? "./log/whv.log" : "| tee ./log/whv.log"
+    log_path = Dir.pwd + "/log/whv.log"
+    logdev = @opts.daemon? ? log_path : "| tee #{log_path}"
     @logger = Logger.new(logdev, 0, 100 * 1024 * 1024)
 
     @pages = Pages.new(@data, @config, @logger)
@@ -43,29 +88,7 @@ class Whv
     Signal.trap("TERM") {
       save_data
       exit 2
-    }
-  end
-
-  def start
-    begin
-      if @opts.daemon?
-        ::Process.daemon(true, true)
-        start_apply
-      elsif @opts.help?
-        puts @opts
-      else
-        start_apply
-      end
-
-      exit 0
-    rescue StandardError => e
-      @logger.fatal(e)
-      Rollbar.critical(e)
-      
-      raise e
-    ensure
-      save_data
-    end
+    }    
   end
 
   def save_cookie(cookie)
@@ -76,7 +99,7 @@ class Whv
   end
 
   def success
-    @file_data = YAML.load(File.read("./log/data.yml")) || {}
+    @file_data = YAML.load(File.read(@data_path)) || {}
     @data = @file_data[@env] || {}
 
     @data["success"]
@@ -147,6 +170,6 @@ class Whv
 
   def save_data
     @file_data[@env] = @data
-    File.write("./log/data.yml", @file_data.to_yaml)
+    File.write(@data_path, @file_data.to_yaml)
   end
 end
